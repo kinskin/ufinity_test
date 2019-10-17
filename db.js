@@ -11,39 +11,23 @@
  */
 
 
-
 const pg = require('pg');
 const url = require('url');
+const mysql = require('mysql')
 
-var configs;
 
-if( process.env.DATABASE_URL ){
-
-  const params = url.parse(process.env.DATABASE_URL);
-  const auth = params.auth.split(':');
-
-  configs = {
-    user: auth[0],
-    password: auth[1],
-    host: params.hostname,
-    port: params.port,
-    database: params.pathname.split('/')[1],
-    ssl: true
-  };
-
-}else{
-  configs = {
-    user: 'akira',
-    host: '127.0.0.1',
-    database: 'testdb',
-    port: 5432
-  };
-}
+let configs = mysql.createConnection({
+          host     : 'localhost',
+          user     : 'root',
+          password : '9203skin22',
+          database : 'firsttesting'
+    });
 
 
 const pool = new pg.Pool(configs);
 
 pool.on('error', function (err) {
+
   console.log('idle client error', err.message, err.stack);
 });
 
@@ -62,9 +46,9 @@ pool.on('error', function (err) {
  */
 
 
-const allPokemonModelsFunction = require('./models/pokemon');
+const teachersModelsFunction = require('./models/modelsIndex.js');
 
-const pokemonModelsObject = allPokemonModelsFunction( pool );
+const teachersModelsObject = teachersModelsFunction( pool );
 
 
 
@@ -95,5 +79,5 @@ module.exports = {
    */
 
   // users: userModelsObject,
-  pokemon: pokemonModelsObject
+  teachers: teachersModelsObject
 };

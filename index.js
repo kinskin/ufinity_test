@@ -1,23 +1,43 @@
-const express = require('express');
-const methodOverride = require('method-override');
-const cookieParser = require('cookie-parser');
-
 /**
  * ===================================
  * Configurations and set up
  * ===================================
  */
 
+
+const express = require('express');
+const methodOverride = require('method-override');
+const cookieParser = require('cookie-parser');
+const sha256 = require('js-sha256');
+const cloudinary = require('cloudinary');
+const multer = require('multer');
+
+/**
+ * ======================================================================================
+ * the configuration below is for the uploading of file to cloudinary
+ * ======================================================================================
+ */
+
+
+const storage = multer.diskStorage({
+  destination: function (request, file, callback) {
+    callback(null, './uploads')
+  },
+  filename: function (request, file, callback) {
+    callback(null,file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
+
 // Init express app
 const app = express();
 
 // Set up middleware
 app.use(methodOverride('_method'));
-
 app.use(cookieParser());
-
 app.use(express.static('public'));
-
+app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
@@ -38,8 +58,9 @@ app.engine('jsx', reactEngine);
  */
 
 // db contains *ALL* of our models
-const allModels = require('./db');
 
+// const allModels = require('./db');
+const mysqlAllModels = require('./mysql_db')
 /**
  * ===================================
  * ===================================
@@ -52,7 +73,7 @@ const allModels = require('./db');
 const setRoutesFunction = require('./routes');
 
 // call it and pass in the "app" so that we can set routes on it (also models)
-setRoutesFunction(app, allModels);
+setRoutesFunction(app, mysqlAllModels);
 
 /**
  * ===================================
@@ -62,14 +83,3 @@ setRoutesFunction(app, allModels);
 const PORT = process.env.PORT || 3000;
 
 const server = app.listen(PORT, () => console.log('~~~ Tuning in to the waves of port '+PORT+' ~~~'));
-
-let onClose = function(){
-
-  server.close(() => {
-    console.log('Process terminated')
-    allModels.pool.end( () => console.log('Shut down db connection pool'));
-  })
-};
-
-process.on('SIGTERM', onClose);
-process.on('SIGINT', onClose);

@@ -1,20 +1,21 @@
-module.exports = (app, allModels) => {
+module.exports = (app, mysqlAllModels) => {
+
+    /*
+    *  =========================================
+    *  =========================================
+    *  =========================================
+    *  =========================================
+    *    ALL ROUTES FOR POKEMON CONTROLLER
+    *  =========================================
+    *  =========================================
+    *  =========================================
+    */
+
+    // require the controller
+    const controllerCallbacks = require('./controllers/controllersIndex.js')(mysqlAllModels);
 
 
-  /*
-   *  =========================================
-   *  =========================================
-   *  =========================================
-   *  =========================================
-   *    ALL ROUTES FOR POKEMON CONTROLLER
-   *  =========================================
-   *  =========================================
-   *  =========================================
-   */
+    app.get('/',)
+    app.get('/showteachers', controllerCallbacks.showTeachers);
 
-  // require the controller
-  const pokemonControllerCallbacks = require('./controllers/pokemon')(allModels);
-
-  app.get('/pokemons', pokemonControllerCallbacks.index);
-  //app.get('/pokemons/:id', pokemons.getPokemon);
 };
