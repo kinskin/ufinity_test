@@ -17,7 +17,7 @@ pool.on('error', function (err) {
 });
 
 
-const teachersModelsFunction = require('./models/modelsIndex.js');
+const teachersModelsFunction = require('./src/newModel/model.js');
 const teachersModelsObject = teachersModelsFunction(pool)
 
 

@@ -52,18 +52,6 @@ app.engine('jsx', reactEngine);
 /**
  * ===================================
  * ===================================
- *                DB
- * ===================================
- * ===================================
- */
-
-// db contains *ALL* of our models
-
-// const allModels = require('./db');
-const mysqlAllModels = require('./mysql_db')
-/**
- * ===================================
- * ===================================
  * Routes
  * ===================================
  * ===================================
@@ -73,7 +61,7 @@ const mysqlAllModels = require('./mysql_db')
 const setRoutesFunction = require('./routes');
 
 // call it and pass in the "app" so that we can set routes on it (also models)
-setRoutesFunction(app, mysqlAllModels);
+setRoutesFunction(app);
 
 /**
  * ===================================

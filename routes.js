@@ -1,21 +1,14 @@
-module.exports = (app, mysqlAllModels) => {
+module.exports = (app) => {
 
-    /*
-    *  =========================================
-    *  =========================================
-    *  =========================================
-    *  =========================================
-    *    ALL ROUTES FOR POKEMON CONTROLLER
-    *  =========================================
-    *  =========================================
-    *  =========================================
-    */
+    const controllersTeacher = require('./controllers/controllersTeacher.js');
 
-    // require the controller
-    const controllerCallbacks = require('./controllers/controllersIndex.js')(mysqlAllModels);
+    app.get('/teacher/:id', controllersTeacher.show);
+    app.get('/teacher/create/:teacherName', controllersTeacher.create);
+    app.get('/teachers', controllersTeacher.index);
 
 
-    app.get('/',)
-    app.get('/showteachers', controllerCallbacks.showTeachers);
+    const controllersStudent = require('./controllers/controllersStudent.js');
+    app.get('/teacher/:id/students/create/:studentName', controllersStudent.create);
+    app.get('/students', controllersStudent.index)
 
 };
